@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { UprightBassFilters } from '../components/FilterInterfaces';
+import { set } from 'mongoose';
 
 interface FilterButtonProps {
     filterToToggle: keyof UprightBassFilters;
@@ -10,18 +11,20 @@ interface FilterButtonProps {
 }
 
 const UprightFilterButton: React.FC<FilterButtonProps> = ({ filterToToggle, filters, toggleFilter, children }) => {
-    const [buttonBgColor, setButtonBgColor] = useState("bg-blue-300");
+    const [buttonBgColor, setButtonBgColor] = useState("bg-pastel-red");
+    const [buttonTextColor, setButtonTextColor] = useState("text-easy-black");
     
     const clickHandle = () => {
         toggleFilter(filterToToggle);
     };
 
     useEffect(() => {
-        // Update button background color based on filter state
         if (filters[filterToToggle]) {
-            setButtonBgColor("bg-blue-500");
+            setButtonBgColor("bg-pastel-red");
+            setButtonTextColor("text-[#FFFFFF]");
         } else {
-            setButtonBgColor("bg-blue-300");
+            setButtonBgColor("bg-[#FFFFFF]");
+            setButtonTextColor("text-easy-black");
         }
     }, [filters, filterToToggle]);
 
@@ -29,7 +32,7 @@ const UprightFilterButton: React.FC<FilterButtonProps> = ({ filterToToggle, filt
         <div>
             <button
                 onClick={clickHandle}
-                className={`hover:underline ${buttonBgColor} outline-black text-white font-bold py-2 px-4 rounded-lg`}
+                className={`hover:underline ${buttonBgColor} outline-black ${buttonTextColor} font-bold py-2 px-4 rounded-lg`}
             >
                 {children}
             </button>

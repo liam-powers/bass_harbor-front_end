@@ -25,7 +25,13 @@ const PriceRangeComponent: React.FC<PriceRangeComponentProps> = ({ filters, setF
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB connection error:', err));
     */
-
+    const styles = {
+        track: { backgroundColor: '#FD5353' }, // Green track
+        handle: { borderColor: '#a63737' }, // Green handle
+        rail: { backgroundColor: '#FFFFFF' }, // Light gray rail
+        mark: { color: '#4caf50' }, // Green marks
+    };
+    
     return (
         <div>
             <div className="pb-10">
@@ -37,10 +43,12 @@ const PriceRangeComponent: React.FC<PriceRangeComponentProps> = ({ filters, setF
                     onChange={(newPriceRange: number | number[]) => handleChange(newPriceRange as number[])}
                     onChangeComplete={(newPriceRange: number | number[]) => setTimeout(handleChange, 1500, (newPriceRange as number[]))}
                     allowCross={false}
-                    step={50} />
+                    step={50}
+                    styles={styles}
+                    />
             </div>
             <div className="">
-                price range: ${priceRange[0]} - ${priceRange[1]}
+                ${priceRange[0]} - ${priceRange[1]}
             </div>
 
         </div>

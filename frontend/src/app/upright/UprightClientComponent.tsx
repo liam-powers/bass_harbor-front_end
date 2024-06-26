@@ -7,15 +7,36 @@ import PriceRangeComponent from './PriceRangeComponent';
 import 'rc-slider/assets/index.css';
 import PlacesAutocomplete from '../components/GoogleMapsSearch';
 import UprightListingsGrid from './UprightListingsGrid';
-// import axios from 'axios';
-import { getFunctions, httpsCallable, connectFunctionsEmulator } from "firebase/functions";
-import { initializeApp } from "firebase/app";
-import firebaseConfig from "../firebaseConfig.json";
+import axios from 'axios';
 
-const myApp = initializeApp(firebaseConfig);
-const functions = getFunctions(myApp);
-connectFunctionsEmulator(functions, "127.0.0.1", 5001); // TODO: remove this line for production
-const fetchListings = httpsCallable(functions, 'fetchListings');
+const fetchListings = async (filters: UprightBassFilters) => {
+    const functionUrl = 'http://127.0.0.1:5001/bass-harbor-free/us-central1/fetchListings';
+  
+    try {
+      const response = await axios({
+        method: 'post', // or 'get' if you prefer
+        url: functionUrl,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: {
+            priceRange: filters.priceRange,
+            keywords: filters.keywords,
+            carved: filters.carved,
+            hybrid: filters.hybrid,
+            plywood: filters.plywood
+        },
+      });
+
+      console.log("Fetch listings completed. ");
+      console.log("Response.data: ", response.data);
+
+      return response.data;
+    } catch (error) {
+      console.error('Error triggering scrape and add:', error);
+      throw error;
+    }
+}
 
 interface UprightBassListing {
     title?: string;
@@ -52,8 +73,7 @@ const UprightClientComponent = () => {
     useEffect(() => {
         const tryFetchListings = async () => {
             try {
-                const result = await fetchListings();
-                const fetchedListings: UprightBassListing[] = result.data as UprightBassListing[];
+                const fetchedListings = await fetchListings(filters);;// as UprightBassListing[];
                 console.log("Listings fetched: ", fetchedListings);
                 setListings(fetchedListings);
             } catch (error) {
@@ -101,55 +121,53 @@ const UprightClientComponent = () => {
     }
 
     return (
-        <div className="flex flex-row align-top gap-40">
-            <div className="w-full h-40 sticky top-40">
-                <div className="flex flex-col justify-center items-center">
-                    <div className="text-3xl font-bold pb-6">filters:</div>
-                    <div className="flex flex-col gap-10">
-                        <div>
-                            <div className="text-2xl font-bold pb-2">wood type:</div>
-                            <div className="flex flex-row flex-wrap gap-2">
-
-                                <UprightFilterButton filterToToggle="carved" filters={filters} toggleFilter={toggleFilter}>
-                                    carved
-                                </UprightFilterButton>
-                                <UprightFilterButton filterToToggle="hybrid" filters={filters} toggleFilter={toggleFilter}>
-                                    hybrid
-                                </UprightFilterButton>
-                                <UprightFilterButton filterToToggle="plywood" filters={filters} toggleFilter={toggleFilter}>
-                                    plywood
-                                </UprightFilterButton>
-                            </div>
-                        </div>
-                        <div>
+       <div className="pt-20">
+            <div className="flex flex-row w-full pl-20 pr-40 gap-40 justify-between">
+                <div className="sticky min-w-[20rem]">
+                    <div className="flex flex-col items-center">
+                        <div className="text-3xl font-bold pb-6">filters:</div> 
+                        <div className="flex flex-col gap-8">
                             <div>
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold pb-2">keywords:</div>
-                                <div className="flex flex-row items-center gap-6 text-2xl font-bold">
-                                    <Input className="" placeholder="enter keyword here" label="keyword" onChange={(e) => setKeyword(e.target.value)} value={keyword} />
-                                    <button onClick={() => handleKeywordAdd(keyword)}>+</button>
+                                <div className="text-2xl font-bold pb-2">wood type:</div>
+                                <div className="flex flex-row flex-wrap gap-2">
+                                    <UprightFilterButton filterToToggle="carved" filters={filters} toggleFilter={toggleFilter}>
+                                        carved
+                                    </UprightFilterButton>
+                                    <UprightFilterButton filterToToggle="hybrid" filters={filters} toggleFilter={toggleFilter}>
+                                        hybrid
+                                    </UprightFilterButton>
+                                    <UprightFilterButton filterToToggle="plywood" filters={filters} toggleFilter={toggleFilter}>
+                                        plywood
+                                    </UprightFilterButton>
                                 </div>
-                                {renderKeywords(filters.keywords ?? [], removeKeyword)}
-
                             </div>
-                        </div>
-                        <div>
-                            <div className="text-2xl font-bold pb-2">price range:</div>
-                            <PriceRangeComponent filters={filters} setFilters={setFilters} />
-                        </div>
-                        <div>
-                            {/* <PlacesAutocomplete /> */}
-                        </div>
-                    </div>  
+                            <div>
+                                <div>
+                                </div>
+                                <div>
+                                    <div className="text-2xl font-bold pb-2">keywords:</div>
+                                    <div className="flex flex-row items-center gap-6 text-2xl font-bold">
+                                        <Input className="" placeholder="enter keyword here" label="keyword" onChange={(e) => setKeyword(e.target.value)} value={keyword} />
+                                        <button onClick={() => handleKeywordAdd(keyword)}>+</button>
+                                    </div>
+                                    {renderKeywords(filters.keywords ?? [], removeKeyword)}
+    
+                                </div>
+                            </div>
+                            <div>
+                                <div className="text-2xl font-bold pb-2">price range:</div>
+                                <PriceRangeComponent filters={filters} setFilters={setFilters} />
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+    
+                <div className="">
+                    <div className="text-3xl font-bold pb-6">your matches:</div>
+                    <UprightListingsGrid listings={listings} />
                 </div>
             </div>
-
-            <div className="min-w-[60rem] max-w-[60rem] pb-20">
-                <div className="text-3xl font-bold pb-6">your matches:</div>
-                <UprightListingsGrid listings={listings} />
-            </div>
-        </div>
+       </div>
     );
 };
 

@@ -2,7 +2,7 @@
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ["www.talkbass.com"],
+        domains: ["www.talkbass.com", "cdn.basschat.co.uk"],
         formats: ["image/webp"],
     },
 };
