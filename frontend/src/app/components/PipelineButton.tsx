@@ -7,14 +7,14 @@ interface PipelineButtonProps {
 }
 
 const PipelineButton: React.FC<PipelineButtonProps> = ({ link, children }) => {
-    const [buttonBgColor, setButtonBgColor] = useState("bg-blue-300");
+    const [buttonBgColor, setButtonBgColor] = useState("bg-pastel-red");
     const [isClicked, setIsClicked] = useState(false);
 
     useEffect(() => {
         if (isClicked) {
-            setButtonBgColor("bg-blue-500");
+            setButtonBgColor("bg-pastel-red-dark");
         } else {
-            setButtonBgColor("bg-blue-300");
+            setButtonBgColor("bg-pastel-red");
         }
     }, [isClicked]);
 

@@ -1,3 +1,4 @@
+/*
 import React, { useState } from 'react';
 import usePlacesAutocomplete, {
   getGeocode,
@@ -62,3 +63,4 @@ const PlacesAutocomplete: React.FC = () => {
 };
 
 export default PlacesAutocomplete;
+*/

@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/navigation/Navigation";
-import {Providers} from "./providers";
+import { Providers } from "./providers";
 import Footer from "./components/navigation/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Bass Harbor",
@@ -19,15 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Providers>
-        <body className={inter.className}>
-          <div className="min-h-screen min-w-screen text-[#FFFFFF] bg-easy-black font-body">
-            <Navigation/>
-            {children}
-            <Footer/>
-          </div>
-        </body>
-      </Providers>
+      <body className="min-h-screen min-w-screen text-[#FFFFFF] bg-easy-black font-body">
+        <Providers>
+          <Navigation />
+          {children}
+          <Footer />
+        </Providers>
+      </body>
     </html>
   );
 }
