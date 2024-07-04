@@ -7,10 +7,7 @@ interface UprightBassListing {
     price?: string;
     year?: number;
     maker?: string;
+    source: string;
 }
 
-const UprightBassListing: UprightBassListing = {
-    imgLink: '',
-};
-
-module.exports = UprightBassListing;
+export default UprightBassListing;

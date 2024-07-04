@@ -5,7 +5,6 @@ import UprightFilterButton from './UprightFilterButton';
 import { Input } from '@nextui-org/react';
 import PriceRangeComponent from './PriceRangeComponent';
 import 'rc-slider/assets/index.css';
-import PlacesAutocomplete from '../components/GoogleMapsSearch';
 import UprightListingsGrid from './UprightListingsGrid';
 import axios from 'axios';
 
@@ -47,6 +46,7 @@ interface UprightBassListing {
     price?: string;
     year?: number;
     maker?: string;
+    source: string;
 }
 
 const renderKeywords = (keywords: String[], removeKeyword: (keyword: String) => void) => {
@@ -165,7 +165,7 @@ const UprightClientComponent = () => {
                 </div>
     
                 <div className="">
-                    <div className="text-3xl font-bold pb-6">your matches:</div>
+                    <div className="text-3xl font-bold pb-6">your matches ({listings.length}):</div>
                     <UprightListingsGrid listings={listings} />
                 </div>
             </div>
