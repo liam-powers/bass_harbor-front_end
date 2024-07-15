@@ -19,6 +19,9 @@ const UprightListingsGrid: React.FC<UprightListingsProps> = ({ listings }) => {
             {listings.map((listing, index) => (
                 <div key={index}>
                     <Image src={listing.imgLink.toString()} width={500} height={500} alt={`Picture of listing ${listing.title}`} />
+                    <a className="text-pastel-red underline" href={listing.listingLink} rel="noopener noreferrer" target="_blank">
+                        {listing.title}
+                    </a>
                     <div>
                         {listing.source === "talkbass" ? (
                             <span>

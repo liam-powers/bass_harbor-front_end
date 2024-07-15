@@ -9,7 +9,7 @@ import UprightListingsGrid from './UprightListingsGrid';
 import axios from 'axios';
 
 const fetchListings = async (filters: UprightBassFilters) => {
-    const functionUrl = 'http://127.0.0.1:5001/bass-harbor-free/us-central1/fetchListings';
+    const functionUrl = 'http://127.0.0.1:5001/bass-harbor-free/us-central1/fetchListings'; //TODO: change to production URL
   
     try {
       const response = await axios({
@@ -164,7 +164,7 @@ const UprightClientComponent = () => {
                     </div>
                 </div>
     
-                <div className="">
+                <div className="pb-40 pr-20">
                     <div className="text-3xl font-bold pb-6">your matches ({listings.length}):</div>
                     <UprightListingsGrid listings={listings} />
                 </div>
